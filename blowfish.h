@@ -54,10 +54,23 @@ typedef enum
 // Export Function prototype
 //
 
+// Blowfish_InitCipher init a Cipher.
+// The key argument should be the Blowfish key, from 1 to 56 bytes.
 Blowfish_ErrorCode Blowfish_InitCipher(Blowfish_Cipher *cipher, BLOWFISH_UINT8 *key, BLOWFISH_SIZE_T keyLen);
 
+// Blowfish_InitSaltedCipher init a Cipher that folds a salt into its key
+// schedule. For most purposes, NewCipher, instead of NewSaltedCipher, is
+// sufficient and desirable. For bcrypt compatibility, the key can be over 56
+// bytes.
 Blowfish_ErrorCode Blowfish_InitSaltedCipher(Blowfish_Cipher *cipher, BLOWFISH_UINT8 *key, BLOWFISH_SIZE_T keyLen, BLOWFISH_UINT8 *salt, BLOWFISH_SIZE_T saltLen);
 
+// Blowfish_Encrypt encrypts the 8-byte buffer src using the key k
+// and stores the result in dst.
+// Note that for amounts of data larger than a block,
+// it is not safe to just call Encrypt on successive blocks;
+// instead, use an encryption mode like CBC (see crypto/cipher/cbc.go).
 void Blowfish_Encrypt(Blowfish_Cipher *c, BLOWFISH_UINT8 *dst, const BLOWFISH_UINT8 *src);
 
+// Blowfish_Decrypt decrypts the 8-byte buffer src using the key k
+// and stores the result in dst.
 void Blowfish_Decrypt(Blowfish_Cipher *c, BLOWFISH_UINT8 *dst, const BLOWFISH_UINT8 *src);
